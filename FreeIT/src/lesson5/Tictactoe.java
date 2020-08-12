@@ -20,11 +20,11 @@ public class Tictactoe {
 		hodX();
 		for (int i = 1; i <= 4; i++) {
 			hodO();
-			checkO();
+			check("O");
 			if (count == 3)
 				break;
 			hodX();
-			checkX();
+			check("X");
 			if (count == 3)
 				break;
 		}
@@ -215,32 +215,17 @@ public class Tictactoe {
 		}
 	}
 
-	static void checkX() {
-		if ((game[0][0] == "X" && game[0][1] == "X" && game[0][2] == "X")
-				|| (game[1][0] == "X" && game[1][1] == "X" && game[1][2] == "X")
-				|| (game[2][0] == "X" && game[2][1] == "X" && game[2][2] == "X")
-				|| (game[0][0] == "X" && game[1][0] == "X" && game[2][0] == "X")
-				|| (game[0][1] == "X" && game[1][1] == "X" && game[2][1] == "X")
-				|| (game[0][2] == "X" && game[1][2] == "X" && game[2][2] == "X")
-				|| (game[0][0] == "X" && game[1][1] == "X" && game[2][2] == "X")
-				|| (game[0][2] == "X" && game[1][1] == "X" && game[2][0] == "X")) {
-			System.out.println("Х выиграл!!! Поздравляем!!!");
+	static void check(String symbol) {
+		if ((game[0][0] == symbol && game[0][1] == symbol && game[0][2] == symbol)
+				|| (game[1][0] == symbol && game[1][1] == symbol && game[1][2] == symbol)
+				|| (game[2][0] == symbol && game[2][1] == symbol && game[2][2] == symbol)
+				|| (game[0][0] == symbol && game[1][0] == symbol && game[2][0] == symbol)
+				|| (game[0][1] == symbol && game[1][1] == symbol && game[2][1] == symbol)
+				|| (game[0][2] == symbol && game[1][2] == symbol && game[2][2] == symbol)
+				|| (game[0][0] == symbol && game[1][1] == symbol && game[2][2] == symbol)
+				|| (game[0][2] == symbol && game[1][1] == symbol && game[2][0] == symbol)) {
+			System.out.println(symbol + " выиграл!!! Поздравляем!!!");
 			count = 3;
 		}
 	}
-
-	static void checkO() {
-		if ((game[0][0] == "O" && game[0][1] == "O" && game[0][2] == "O")
-				|| (game[1][0] == "O" && game[1][1] == "O" && game[1][2] == "O")
-				|| (game[2][0] == "O" && game[2][1] == "O" && game[2][2] == "O")
-				|| (game[0][0] == "O" && game[1][0] == "O" && game[2][0] == "O")
-				|| (game[0][1] == "O" && game[1][1] == "O" && game[2][1] == "O")
-				|| (game[0][2] == "O" && game[1][2] == "O" && game[2][2] == "O")
-				|| (game[0][0] == "O" && game[1][1] == "O" && game[2][2] == "O")
-				|| (game[0][2] == "O" && game[1][1] == "O" && game[2][0] == "O")) {
-			System.out.println("O выиграл!!! Поздравляем!!!");
-			count = 3;
-		}
-	}
-
 }
