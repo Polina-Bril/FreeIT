@@ -15,10 +15,10 @@ public class Run {
 
 	public static void inspection(Class<?> cls) throws ReflectiveOperationException, SecurityException {
 		if (cls.isAnnotationPresent(Version.class)) {
-			MyService myS = new MyService("Changing keyboard", 70);
-			Method m = MyService.class.getDeclaredMethod("thisClassInfo");
-			m.setAccessible(true);
-			m.invoke(myS);
+			MyService myService = new MyService("Changing keyboard", 70);
+			Method methodPrivateInMyService = MyService.class.getDeclaredMethod("thisClassInfo");
+			methodPrivateInMyService.setAccessible(true);
+			methodPrivateInMyService.invoke(myService);
 		}
 	}
 }

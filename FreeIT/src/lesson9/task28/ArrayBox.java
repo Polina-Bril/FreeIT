@@ -16,8 +16,12 @@ public class ArrayBox<T> {
 	}
 
 	public T get(int index) {
-		return array[index];
-
+		try {
+			return array[index];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Данный индекс за пределами границ данного массива");
+			return null;
+		}
 	}
 
 	public T[] getArray() {
