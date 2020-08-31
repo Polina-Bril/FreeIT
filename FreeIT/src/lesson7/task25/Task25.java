@@ -14,9 +14,9 @@ public class Task25 {
 	public static void main(String[] args) {
 		ATM atm = new ATM(8, 5, 2);
 		System.out.println(atm.withdrawMoney(1060));
-		System.out.println(atm.getQuantityOf100());
-		System.out.println(atm.getQuantityOf50());
-		System.out.println(atm.getQuantityOf20());
+		System.out.println("Kolichestvo kupyur v ATM nominalov 100 = "+atm.getQuantityOf100());
+		System.out.println("Kolichestvo kupyur v ATM nominalov 50 = "+atm.getQuantityOf50());
+		System.out.println("Kolichestvo kupyur v ATM nominalov 20 = "+atm.getQuantityOf20());
 
 	}
 
