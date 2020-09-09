@@ -10,13 +10,16 @@ import java.util.Scanner;
 public class Application {
 
 	private Library libr;
+	private boolean exitApplication;
+	private boolean exitPrinting;
+	private boolean exitAdding;
 
 	public Application() {
 		super();
 		ArrayList<Book> book = new ArrayList<>();
-		Book book1 = new Book(123, "Atlant", "Roman");
-		Book book2 = new Book(345, "Puaro", "Detective");
-		Book book3 = new Book(567, "NLO", "Fantasy");
+		Book book1 = new Book("Atlant", "Roman");
+		Book book2 = new Book("Puaro", "Detective");
+		Book book3 = new Book("NLO", "Fantasy");
 		book.add(book1);
 		book.add(book2);
 		book.add(book3);
@@ -25,44 +28,42 @@ public class Application {
 	}
 
 	public void start() {
-		menu();
+		do {
+			menu();
+		} while (!exitApplication);
 	}
 
 	private void menu() {
-		System.out.println(
-				"Выберите действие (введите число, соответствующее действию): \n1. Вывод всех книг.\n2. Добавление книги.\n3. Удаление книги.\n4. Редактирование книги.\n5. Выход.");
-		Scanner sc = new Scanner(System.in);
-		int choice = 0;
-		try {
-			choice = sc.nextInt();
-		} catch (InputMismatchException e) {
-			System.out.println("Вы должны ввести число! Попробуйте еще раз!");
-			menu();
-			return;
-		}
+		Integer choice = 0;
+		do {
+			System.out.println(
+					"Выберите действие (введите число, соответствующее действию): \n1. Вывод всех книг.\n2. Добавление книги.\n3. Удаление книги.\n4. Редактирование книги.\n5. Выход.");
+			choice = inputFromConcole();
+		} while (choice == null);
+
 		switch (choice) {
 		case 1:
-			printAllBooks();
-			menu();
+			do {
+				printAllBooks();
+			} while (!exitPrinting);
 			break;
 		case 2:
-			addingBook();
-			menu();
+			do {
+				addingBook();
+			} while (!exitAdding);
 			break;
 		case 3:
 			deletingBook();
-			menu();
 			break;
 		case 4:
 			correctingBook();
-			menu();
 			break;
 		case 5:
 			System.out.println("До свиданья!");
+			exitApplication = true;
 			break;
 		default:
 			System.out.println("Число введено неверно. Попробуйте еще раз!");
-			menu();
 		}
 
 	}
@@ -71,41 +72,38 @@ public class Application {
 		if (libr.getBooks() == null) {
 			System.out.println("В библиотеке нет книг. Нечего выводить!");
 		} else {
-			System.out.println(
-					"Выберите желаемую сортировку при выводе (введите число, соответствующее желаемой сортировке): \n1. По алфавиту по названию книги.\n2. По добавлению(сначала новые, потом более старые).\n3. По добавлению(сначала старые, потом новые).");
-			Scanner sc = new Scanner(System.in);
-			int choice = 0;
-			try {
-				choice = sc.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.println("Вы должны ввести число! Попробуйте еще раз!");
-				printAllBooks();
-				return;
-			}
+			Integer choice = 0;
+			do {
+				System.out.println(
+						"Выберите желаемую сортировку при выводе (введите число, соответствующее желаемой сортировке): \n1. По алфавиту по названию книги.\n2. По добавлению(сначала новые, потом более старые).\n3. По добавлению(сначала старые, потом новые).");
+				choice = inputFromConcole();
+			} while (choice == null);
+
 			switch (choice) {
 			case 1:
 				sort1();
 				System.out.println("Вывод книг прошел успешно!");
-				menu();
+				exitPrinting = true;
 				break;
 			case 2:
 				sort2();
 				System.out.println("Вывод книг прошел успешно!");
-				menu();
+				exitPrinting = true;
 				break;
 			case 3:
 				sort3();
 				System.out.println("Вывод книг прошел успешно!");
-				menu();
+				exitPrinting = true;
 				break;
 			default:
-				System.out.println("Число введено неверно. Попробуйте еще раз!");
-				printAllBooks();
+				System.out.println("Число введено неверно. Необходимо ввести 1 или 2 или 3. Попробуйте еще раз!");
+				exitPrinting = false;
 			}
 		}
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void sort1() {
 		List<Book> a = libr.getAll();
 		a.sort(new Comparator() {
@@ -121,16 +119,14 @@ public class Application {
 		System.out.println(a);
 	}
 
-	private void sort2() {
+	private void sort3() {
 		System.out.println(libr);
 	}
 
-	private void sort3() {
-		ListIterator<Book> iter1 = libr.getBooks().listIterator();
+	private void sort2() {
 		ArrayList<Book> b1 = new ArrayList<>();
-		while (iter1.hasNext()) {
-			iter1.next();
-		}
+		b1.add(libr.getBooks().get(libr.getBooks().size() - 1));
+		ListIterator<Book> iter1 = libr.getBooks().listIterator(libr.getBooks().size() - 1);
 		while (iter1.hasPrevious()) {
 			b1.add(iter1.previous());
 		}
@@ -138,49 +134,42 @@ public class Application {
 	}
 
 	private void addingBook() {
-		System.out.println("Сейчас будем вводить данные для создания новой книги. Введите id (целое число):");
-		Scanner sc = new Scanner(System.in);
-		int id = 1;
-		try {
-			id = sc.nextInt();
-		} catch (InputMismatchException e) {
-			System.out.println("Вы должны ввести число! Попробуйте еще раз!");
-			addingBook();
-			return;
-		}
+		System.out.println("Сейчас будем вводить данные для создания новой книги.");
+		Integer id = 0;
+		do {
+			System.out.println("Введите id (целое положительное число):");
+			id = inputFromConcole();
+		} while (id == null || id <= 0);
+
 		ListIterator<Book> iter = libr.getBooks().listIterator();
 		while (iter.hasNext()) {
 			Book b = iter.next();
 			if (b.getId() == id) {
 				System.out.println("В библиотеке уже есть книга с таким id. Поменяйте id!");
-				addingBook();
+				exitAdding = false;
 				return;
 			}
 		}
-		sc.nextLine();
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Введите название книги");
 		String name = sc.nextLine();
 		System.out.println("Введите жанр книги");
 		String genre = sc.nextLine();
-		Book book = new Book(id, name, genre);
+		Book book = new Book(name, genre);
 		libr.addBook(book);
 		System.out.println("Книга успешно добавлена в библиотеку!");
+		exitAdding = true;
 	}
 
 	private void deletingBook() {
 		if (libr.getBooks() == null) {
 			System.out.println("В библиотеке нет книг. Нечего удалять!");
 		} else {
-			System.out.println("Введите id (целое число) книги, которую надо удалить");
-			Scanner sc = new Scanner(System.in);
-			int id = 1;
-			try {
-				id = sc.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.println("Вы должны ввести число! Попробуйте еще раз!");
-				deletingBook();
-				return;
-			}
+			Integer id = 1;
+			do {
+				System.out.println("Введите id (целое число) книги, которую надо удалить");
+				id = inputFromConcole();
+			} while (id == null);
 			int count = 0;
 			ListIterator<Book> iter = libr.getBooks().listIterator();
 			while (iter.hasNext()) {
@@ -202,16 +191,14 @@ public class Application {
 		if (libr.getBooks() == null) {
 			System.out.println("В библиотеке нет книг. Нечего редактировать!");
 		} else {
-			System.out.println("Сейчас будем вводить данные для корректировки книги. Введите id (целое число):");
-			Scanner sc = new Scanner(System.in);
-			int id = 1;
-			try {
-				id = sc.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.println("Вы должны ввести число! Попробуйте еще раз!");
-				correctingBook();
-				return;
-			}
+			System.out.println("Сейчас будем вводить данные для корректировки книги.");
+
+			Integer id = 1;
+			do {
+				System.out.println("Введите id (целое число):");
+				id = inputFromConcole();
+			} while (id == null);
+
 			int count = 0;
 			ListIterator<Book> iter = libr.getBooks().listIterator();
 			while (iter.hasNext()) {
@@ -223,15 +210,30 @@ public class Application {
 			if (count == 0) {
 				System.out.println("В библиотеке нет книги с таким id. Нечего редактировать!");
 			} else {
-				sc.nextLine();
+				Scanner sc = new Scanner(System.in);
 				System.out.println("Введите название книги");
 				String name = sc.nextLine();
 				System.out.println("Введите жанр книги");
 				String genre = sc.nextLine();
-				Book book = new Book(id, name, genre);
+				Book book = new Book(name, genre);
+				book.setId(id);
 				libr.correctBook(book);
+				int counForIdBecameAdecvate = Book.getCountForId() - 1;
+				Book.setCountForId(counForIdBecameAdecvate);
 				System.out.println("Книга успешно отредактирована!");
 			}
+		}
+	}
+
+	private Integer inputFromConcole() {
+		Scanner sc = new Scanner(System.in);
+		int choice = 0;
+		try {
+			choice = sc.nextInt();
+			return choice;
+		} catch (InputMismatchException e) {
+			System.out.println("Вы должны ввести число! Попробуйте еще раз!");
+			return null;
 		}
 	}
 }

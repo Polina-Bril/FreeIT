@@ -2,6 +2,7 @@ package lesson_10;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -11,7 +12,7 @@ public class Library {
 
 	public Library() {
 		super();
-			}
+	}
 
 	public Library(ArrayList<Book> books) {
 		super();
@@ -31,6 +32,8 @@ public class Library {
 			}
 			if (count == 0) {
 				books.add(book);
+			} else {
+				System.out.println("The book is this ID is already exist in the library.");
 			}
 		} else {
 			ArrayList<Book> b = new ArrayList<>();
@@ -59,13 +62,12 @@ public class Library {
 		if (books != null) {
 			ListIterator<Book> iter = books.listIterator();
 			while (iter.hasNext()) {
-				Book b = iter.next();
-				if (b.getId() == book.getId()) {
+				if (iter.next().getId() == book.getId()) {
 					iter.set(book);
 				}
 			}
 		}
-		
+
 	}
 
 	public ArrayList<Book> getBooks() {
