@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<w:Devices
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="DevicesValidator.xsd"
+	xmlns:w="DevicesValidator.xsd">
+	<Device>
+		<Name>Mouse</Name>
+		<Origin>China</Origin>
+		<Price currency="USD">35</Price>
+		<Type TMScode="aa532678">
+			<isPeripheral>true</isPeripheral>
+			<hasCooler>false</hasCooler>
+			<energyConsumption>5</energyConsumption>
+			<componentsGroup>IODEVICES</componentsGroup>
+			<ports>COM</ports>
+		</Type>
+		<Critical>true</Critical>
+	</Device>
+		<Device>
+		<Name>HDD</Name>
+		<Origin>Taiwan</Origin>
+		<Price currency="USD">50</Price>
+		<Type TMScode="bb5389678">
+			<isPeripheral>true</isPeripheral>
+			<hasCooler>false</hasCooler>
+			<energyConsumption>5</energyConsumption>
+			<componentsGroup>MULTIMEDIA</componentsGroup>
+			<ports>USB</ports>
+		</Type>
+		<Critical>false</Critical>
+	</Device>
+</w:Devices>
