@@ -11,19 +11,8 @@ public class Application {
 
 	private Library libr;
 	private boolean exitApplication;
-	private boolean exitPrinting;
-	private boolean exitAdding;
 
-	public Application() {
-		super();
-		ArrayList<Book> book = new ArrayList<>();
-		Book book1 = new Book("Atlant", "Roman");
-		Book book2 = new Book("Puaro", "Detective");
-		Book book3 = new Book("NLO", "Fantasy");
-		book.add(book1);
-		book.add(book2);
-		book.add(book3);
-		Library lib = new Library(book);
+	public Application(Library lib) {
 		libr = lib;
 	}
 
@@ -34,23 +23,16 @@ public class Application {
 	}
 
 	private void menu() {
-		Integer choice = 0;
-		do {
-			System.out.println(
-					"Выберите действие (введите число, соответствующее действию): \n1. Вывод всех книг.\n2. Добавление книги.\n3. Удаление книги.\n4. Редактирование книги.\n5. Выход.");
-			choice = inputFromConcole();
-		} while (choice == null);
+		System.out.println(
+				"Выберите действие (введите число, соответствующее действию): \n1. Вывод всех книг.\n2. Добавление книги.\n3. Удаление книги.\n4. Редактирование книги.\n5. Выход.");
+		Integer choice = inputFromConcole();
 
 		switch (choice) {
 		case 1:
-			do {
-				printAllBooks();
-			} while (!exitPrinting);
+			printAllBooks();
 			break;
 		case 2:
-			do {
-				addingBook();
-			} while (!exitAdding);
+			addingBook();
 			break;
 		case 3:
 			deletingBook();
@@ -72,35 +54,35 @@ public class Application {
 		if (libr.getBooks() == null) {
 			System.out.println("В библиотеке нет книг. Нечего выводить!");
 		} else {
-			Integer choice = 0;
+			boolean exitPrinting = false;
 			do {
 				System.out.println(
 						"Выберите желаемую сортировку при выводе (введите число, соответствующее желаемой сортировке): \n1. По алфавиту по названию книги.\n2. По добавлению(сначала новые, потом более старые).\n3. По добавлению(сначала старые, потом новые).");
-				choice = inputFromConcole();
-			} while (choice == null);
+				Integer choice = inputFromConcole();
 
-			switch (choice) {
-			case 1:
-				sort1();
-				System.out.println("Вывод книг прошел успешно!");
-				exitPrinting = true;
-				break;
-			case 2:
-				sort2();
-				System.out.println("Вывод книг прошел успешно!");
-				exitPrinting = true;
-				break;
-			case 3:
-				sort3();
-				System.out.println("Вывод книг прошел успешно!");
-				exitPrinting = true;
-				break;
-			default:
-				System.out.println("Число введено неверно. Необходимо ввести 1 или 2 или 3. Попробуйте еще раз!");
-				exitPrinting = false;
-			}
+				switch (choice) {
+				case 1:
+					sort1();
+					System.out.println("Вывод книг прошел успешно!");
+					exitPrinting = true;
+					break;
+				case 2:
+					sort2();
+					System.out.println("Вывод книг прошел успешно!");
+					exitPrinting = true;
+					break;
+				case 3:
+					sort3();
+					System.out.println(libr.getAll());
+					System.out.println("Вывод книг прошел успешно!");
+					exitPrinting = true;
+					break;
+				default:
+					System.out.println("Число введено неверно. Необходимо ввести 1 или 2 или 3. Попробуйте еще раз!");
+					exitPrinting = false;
+				}
+			} while (!exitPrinting);
 		}
-
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -119,12 +101,23 @@ public class Application {
 		System.out.println(a);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void sort3() {
-		System.out.println(libr);
+		List<Book> a = libr.getAll();
+		a.sort(new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				Book b1 = (Book) o1;
+				Book b2 = (Book) o2;
+				return Integer.compare(b1.getId(), b2.getId());
+			}
+		});
 	}
 
 	private void sort2() {
 		ArrayList<Book> b1 = new ArrayList<>();
+		sort3();
 		b1.add(libr.getBooks().get(libr.getBooks().size() - 1));
 		ListIterator<Book> iter1 = libr.getBooks().listIterator(libr.getBooks().size() - 1);
 		while (iter1.hasPrevious()) {
@@ -135,30 +128,24 @@ public class Application {
 
 	private void addingBook() {
 		System.out.println("Сейчас будем вводить данные для создания новой книги.");
-		Integer id = 0;
-		do {
-			System.out.println("Введите id (целое положительное число):");
-			id = inputFromConcole();
-		} while (id == null || id <= 0);
-
-		ListIterator<Book> iter = libr.getBooks().listIterator();
-		while (iter.hasNext()) {
-			Book b = iter.next();
-			if (b.getId() == id) {
-				System.out.println("В библиотеке уже есть книга с таким id. Поменяйте id!");
-				exitAdding = false;
-				return;
-			}
-		}
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Введите название книги");
 		String name = sc.nextLine();
+		ListIterator<Book> iter = libr.getBooks().listIterator();
+		while (iter.hasNext()) {
+			Book b = iter.next();
+			if (b.getTitle().equals(name)) {
+				System.out.println("В библиотеке уже есть книга с таким названием. Поменяйте название!");
+				return;
+			}
+		}
+
 		System.out.println("Введите жанр книги");
 		String genre = sc.nextLine();
 		Book book = new Book(name, genre);
 		libr.addBook(book);
 		System.out.println("Книга успешно добавлена в библиотеку!");
-		exitAdding = true;
+
 	}
 
 	private void deletingBook() {
