@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="DevicesValidator.xsd" xmlns:w="DevicesValidator.xsd">
+	<xsd:element name="Devices" type="w:Devices" />
+	<xsd:complexType name="Devices">
+		<xsd:sequence>
+			<xsd:element name="Device" type="w:Device" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Device">
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string" />
+			<xsd:element name="Origin" type="xsd:string" />
+			<xsd:element name="Price" type="w:Price" />
+			<xsd:element name="Type" type="w:Type" />
+			<xsd:element name="Critical" type="xsd:boolean" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Price">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:positiveInteger">
+				<xsd:attribute name="currency" use="optional" default="USD">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:string">
+							<xsd:enumeration value="USD"></xsd:enumeration>
+							<xsd:enumeration value="EUR"></xsd:enumeration>
+							<xsd:enumeration value="BYR"></xsd:enumeration>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Type">
+		<xsd:sequence>
+			<xsd:element name="isPeripheral" type="xsd:boolean" />
+			<xsd:element name="hasCooler" type="xsd:boolean" />
+			<xsd:element name="energyConsumption" type="xsd:integer" />
+			<xsd:element name="componentsGroup" default="MULTIMEDIA">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="IODEVICES"></xsd:enumeration>
+						<xsd:enumeration value="MULTIMEDIA"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="ports" default="COM">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="COM"></xsd:enumeration>
+						<xsd:enumeration value="USB"></xsd:enumeration>
+						<xsd:enumeration value="LPT"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+					</xsd:sequence>
+		<xsd:attribute name="TMScode" type="w:TMScode" use="required" />
+	</xsd:complexType>
+	<xsd:simpleType name="TMScode">
+		<xsd:restriction base="xsd:ID">
+			<xsd:pattern value="[a-zA-Z]{2}[a-zA-Z0-9]{5,10}"/> 
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
