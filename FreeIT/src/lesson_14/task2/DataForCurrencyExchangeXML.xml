@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<w:CurrencyExchanges
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="DataForCurrencyExchangeXML.xsd"
+	xmlns:w="DataForCurrencyExchangeXML.xsd">
+	<CurrencyExchange>
+		<id>1</id>
+		<quantityOfUSD>5000</quantityOfUSD>
+		<quantityOfEUR>2500</quantityOfEUR>
+	</CurrencyExchange>
+	<CurrencyExchange>
+		<id>2</id>
+		<quantityOfUSD>4000</quantityOfUSD>
+		<quantityOfEUR>3000</quantityOfEUR>
+	</CurrencyExchange>
+	<CurrencyExchange>
+		<id>3</id>
+		<quantityOfUSD>2500</quantityOfUSD>
+		<quantityOfEUR>5000</quantityOfEUR>
+	</CurrencyExchange>
+</w:CurrencyExchanges>
